@@ -45,13 +45,11 @@ class Artista{
 	//Guarda o actualiza el objeto en la base de datos, la accion se determina por la clave primaria
 	public function save(){
 		if(empty($this->idArtista)){			
-			$this->setCommonValuesInsert();
 			$this->idArtista = $this->con->autoInsert(array(
 			"nombre" => $this->nombre,
 			),"Artista");
 			return;
 		}
-		$this->setCommonValuesUpdate();
 		return $this->con->autoUpdate(array(
 			"nombre" => $this->nombre,
 			),"Artista","idArtista=".$this->getId());

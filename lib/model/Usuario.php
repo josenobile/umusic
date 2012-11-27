@@ -80,7 +80,6 @@ class Usuario{
 	//Guarda o actualiza el objeto en la base de datos, la accion se determina por la clave primaria
 	public function save(){
 		if(empty($this->idUsuario)){			
-			$this->setCommonValuesInsert();
 			$this->idUsuario = $this->con->autoInsert(array(
 			"nombre" => $this->nombre,
 			"apellido" => $this->apellido,
@@ -91,7 +90,6 @@ class Usuario{
 			),"Usuario");
 			return;
 		}
-		$this->setCommonValuesUpdate();
 		return $this->con->autoUpdate(array(
 			"nombre" => $this->nombre,
 			"apellido" => $this->apellido,

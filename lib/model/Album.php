@@ -60,14 +60,12 @@ class Album{
 	//Guarda o actualiza el objeto en la base de datos, la accion se determina por la clave primaria
 	public function save(){
 		if(empty($this->idAlbum)){			
-			$this->setCommonValuesInsert();
 			$this->idAlbum = $this->con->autoInsert(array(
 			"nombre" => $this->nombre,
 			"Artista_idArtista" => $this->artistaIdArtista,
 			),"Album");
 			return;
 		}
-		$this->setCommonValuesUpdate();
 		return $this->con->autoUpdate(array(
 			"nombre" => $this->nombre,
 			"Artista_idArtista" => $this->artistaIdArtista,

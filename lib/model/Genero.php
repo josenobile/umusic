@@ -45,13 +45,11 @@ class Genero{
 	//Guarda o actualiza el objeto en la base de datos, la accion se determina por la clave primaria
 	public function save(){
 		if(empty($this->idGenero)){			
-			$this->setCommonValuesInsert();
 			$this->idGenero = $this->con->autoInsert(array(
 			"nombre" => $this->nombre,
 			),"Genero");
 			return;
 		}
-		$this->setCommonValuesUpdate();
 		return $this->con->autoUpdate(array(
 			"nombre" => $this->nombre,
 			),"Genero","idGenero=".$this->getId());

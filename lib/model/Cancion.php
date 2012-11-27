@@ -118,7 +118,6 @@ class Cancion{
 	//Guarda o actualiza el objeto en la base de datos, la accion se determina por la clave primaria
 	public function save(){
 		if(empty($this->idCancion)){			
-			$this->setCommonValuesInsert();
 			$this->idCancion = $this->con->autoInsert(array(
 			"nombre" => $this->nombre,
 			"duracion" => $this->duracion,
@@ -131,7 +130,6 @@ class Cancion{
 			),"Cancion");
 			return;
 		}
-		$this->setCommonValuesUpdate();
 		return $this->con->autoUpdate(array(
 			"nombre" => $this->nombre,
 			"duracion" => $this->duracion,
