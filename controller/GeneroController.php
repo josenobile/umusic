@@ -11,7 +11,9 @@ class GeneroController{
 	}
     public function manejadorDeAcciones() {
 		if (@$_REQUEST ['sEcho'] != "") {
-			die ( $this->genero->getPager ( )->getJSON () );
+			die ( $this->genero->getPager (array(
+				   			"Nombre",
+            			) )->getJSON () );
 		}
 		if(isset($_REQUEST["format"])){
 			$_POST["html"] = $this->motorDePlantilas->render ( strtolower($_REQUEST['format']),array("data"=>$this->genero->getAll()) );
@@ -33,10 +35,10 @@ class GeneroController{
 		$this->mostarPlantilla ();
 	}
 	private function guardar() {
-		$this->genero->cargarPorId($_POST [$genero->getNombreId()]);
+		$this->genero->cargarPorId($_POST [$this->genero->getNombreId()]);
 		$this->genero->setValues ( $_POST );		
-		if(isset($_POST ["passwordNew"]) && $_POST ["passwordNew"]!="")
-			$this->genero->setPassword(md5($_POST ["passwordNew"]));
+		if(isset($_POST ["contraseñaNew"]) && $_POST ["contraseñaNew"]!="")
+			$this->genero->setContraseña(md5($_POST ["contraseñaNew"]));
 		$this->genero->save ();
 		$resp = json_encode ( array (
 				"msg" => "El registro fue grabado. ID=" . $this->genero->getId (),

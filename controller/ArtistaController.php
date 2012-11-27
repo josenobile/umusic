@@ -11,7 +11,9 @@ class ArtistaController{
 	}
     public function manejadorDeAcciones() {
 		if (@$_REQUEST ['sEcho'] != "") {
-			die ( $this->artista->getPager ( )->getJSON () );
+			die ( $this->artista->getPager (array(
+				   			"Nombre",
+            			) )->getJSON () );
 		}
 		if(isset($_REQUEST["format"])){
 			$_POST["html"] = $this->motorDePlantilas->render ( strtolower($_REQUEST['format']),array("data"=>$this->artista->getAll()) );
@@ -33,10 +35,10 @@ class ArtistaController{
 		$this->mostarPlantilla ();
 	}
 	private function guardar() {
-		$this->artista->cargarPorId($_POST [$artista->getNombreId()]);
+		$this->artista->cargarPorId($_POST [$this->artista->getNombreId()]);
 		$this->artista->setValues ( $_POST );		
-		if(isset($_POST ["passwordNew"]) && $_POST ["passwordNew"]!="")
-			$this->artista->setPassword(md5($_POST ["passwordNew"]));
+		if(isset($_POST ["contraseñaNew"]) && $_POST ["contraseñaNew"]!="")
+			$this->artista->setContraseña(md5($_POST ["contraseñaNew"]));
 		$this->artista->save ();
 		$resp = json_encode ( array (
 				"msg" => "El registro fue grabado. ID=" . $this->artista->getId (),

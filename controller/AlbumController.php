@@ -11,7 +11,10 @@ class AlbumController{
 	}
     public function manejadorDeAcciones() {
 		if (@$_REQUEST ['sEcho'] != "") {
-			die ( $this->album->getPager ( )->getJSON () );
+			die ( $this->album->getPager (array(
+				   			"Nombre",
+            			"Artista IdArtista",
+            			) )->getJSON () );
 		}
 		if(isset($_REQUEST["format"])){
 			$_POST["html"] = $this->motorDePlantilas->render ( strtolower($_REQUEST['format']),array("data"=>$this->album->getAll()) );
@@ -33,10 +36,10 @@ class AlbumController{
 		$this->mostarPlantilla ();
 	}
 	private function guardar() {
-		$this->album->cargarPorId($_POST [$album->getNombreId()]);
+		$this->album->cargarPorId($_POST [$this->album->getNombreId()]);
 		$this->album->setValues ( $_POST );		
-		if(isset($_POST ["passwordNew"]) && $_POST ["passwordNew"]!="")
-			$this->album->setPassword(md5($_POST ["passwordNew"]));
+		if(isset($_POST ["contraseñaNew"]) && $_POST ["contraseñaNew"]!="")
+			$this->album->setContraseña(md5($_POST ["contraseñaNew"]));
 		$this->album->save ();
 		$resp = json_encode ( array (
 				"msg" => "El registro fue grabado. ID=" . $this->album->getId (),

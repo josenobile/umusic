@@ -4,7 +4,7 @@ class Usuario{
 	private $nombre;
 	private $apellido;
 	private $email;
-	private $contraseña;
+	private $contraseÃ±a;
 	private $estado;
 	private $sesionActiva;
 	protected $con;
@@ -35,8 +35,8 @@ class Usuario{
 	public function getEmail(){
 		return $this->email;
 	}
-	public function getContraseña(){
-		return $this->contraseña;
+	public function getContraseÃ±a(){
+		return $this->contraseÃ±a;
 	}
 	public function getEstado(){
 		return $this->estado;
@@ -59,8 +59,8 @@ class Usuario{
 	public function setEmail($email){
 		$this->email = $email;
 	}
-	public function setContraseña($contraseña){
-		$this->contraseña = $contraseña;
+	public function setContraseÃ±a($contraseÃ±a){
+		$this->contraseÃ±a = $contraseÃ±a;
 	}
 	public function setEstado($estado){
 		$this->estado = $estado;
@@ -84,7 +84,7 @@ class Usuario{
 			"nombre" => $this->nombre,
 			"apellido" => $this->apellido,
 			"email" => $this->email,
-			"contraseña" => $this->contraseña,
+			"contraseÃ±a" => $this->contraseÃ±a,
 			"estado" => $this->estado,
 			"sesion_activa" => $this->sesionActiva,
 			),"Usuario");
@@ -94,7 +94,7 @@ class Usuario{
 			"nombre" => $this->nombre,
 			"apellido" => $this->apellido,
 			"email" => $this->email,
-			"contraseña" => $this->contraseña,
+			"contraseÃ±a" => $this->contraseÃ±a,
 			"estado" => $this->estado,
 			"sesion_activa" => $this->sesionActiva,
 			),"Usuario","idUsuario=".$this->getId());
@@ -107,7 +107,7 @@ class Usuario{
 			$this->nombre = $result[0]['nombre'];
 			$this->apellido = $result[0]['apellido'];
 			$this->email = $result[0]['email'];
-			$this->contraseña = $result[0]['contraseña'];
+			$this->contraseÃ±a = $result[0]['contraseÃ±a'];
 			$this->estado = $result[0]['estado'];
 			$this->sesionActiva = $result[0]['sesion_activa'];
 		return $result[0];

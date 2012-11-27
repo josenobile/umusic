@@ -5,7 +5,7 @@ class Cancion{
 	private $duracion;
 	private $contenidoBinario;
 	private $mime;
-	private $tamañoBytes;
+	private $tamaÃ±oBytes;
 	private $albumIdAlbum;
 	private $generoIdGenero;
 	private $usuarioIdUsuario;
@@ -40,8 +40,8 @@ class Cancion{
 	public function getMime(){
 		return $this->mime;
 	}
-	public function getTamañoBytes(){
-		return $this->tamañoBytes;
+	public function getTamaÃ±oBytes(){
+		return $this->tamaÃ±oBytes;
 	}
 	public function getAlbumIdAlbum(){
 		return $this->albumIdAlbum;
@@ -94,8 +94,8 @@ class Cancion{
 	public function setMime($mime){
 		$this->mime = $mime;
 	}
-	public function setTamañoBytes($tamañoBytes){
-		$this->tamañoBytes = $tamañoBytes;
+	public function setTamaÃ±oBytes($tamaÃ±oBytes){
+		$this->tamaÃ±oBytes = $tamaÃ±oBytes;
 	}
 	public function setAlbumIdAlbum($albumIdAlbum){
 		$this->albumIdAlbum = $albumIdAlbum;
@@ -123,7 +123,7 @@ class Cancion{
 			"duracion" => $this->duracion,
 			"contenido_binario" => $this->contenidoBinario,
 			"mime" => $this->mime,
-			"tamaño_bytes" => $this->tamañoBytes,
+			"tamaÃ±o_bytes" => $this->tamaÃ±oBytes,
 			"Album_idAlbum" => $this->albumIdAlbum,
 			"Genero_idGenero" => $this->generoIdGenero,
 			"Usuario_idUsuario" => $this->usuarioIdUsuario,
@@ -135,7 +135,7 @@ class Cancion{
 			"duracion" => $this->duracion,
 			"contenido_binario" => $this->contenidoBinario,
 			"mime" => $this->mime,
-			"tamaño_bytes" => $this->tamañoBytes,
+			"tamaÃ±o_bytes" => $this->tamaÃ±oBytes,
 			"Album_idAlbum" => $this->albumIdAlbum,
 			"Genero_idGenero" => $this->generoIdGenero,
 			"Usuario_idUsuario" => $this->usuarioIdUsuario,
@@ -150,7 +150,7 @@ class Cancion{
 			$this->duracion = $result[0]['duracion'];
 			$this->contenidoBinario = $result[0]['contenido_binario'];
 			$this->mime = $result[0]['mime'];
-			$this->tamañoBytes = $result[0]['tamaño_bytes'];
+			$this->tamaÃ±oBytes = $result[0]['tamaÃ±o_bytes'];
 			$this->albumIdAlbum = $result[0]['Album_idAlbum'];
 			$this->generoIdGenero = $result[0]['Genero_idGenero'];
 			$this->usuarioIdUsuario = $result[0]['Usuario_idUsuario'];

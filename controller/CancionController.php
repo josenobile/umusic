@@ -11,7 +11,16 @@ class CancionController{
 	}
     public function manejadorDeAcciones() {
 		if (@$_REQUEST ['sEcho'] != "") {
-			die ( $this->cancion->getPager ( )->getJSON () );
+			die ( $this->cancion->getPager (array(
+				   			"Nombre",
+            			"Duracion",
+            			"Contenido Binario",
+            			"Mime",
+            			"Tamaño Bytes",
+            			"Album IdAlbum",
+            			"Genero IdGenero",
+            			"Usuario IdUsuario",
+            			) )->getJSON () );
 		}
 		if(isset($_REQUEST["format"])){
 			$_POST["html"] = $this->motorDePlantilas->render ( strtolower($_REQUEST['format']),array("data"=>$this->cancion->getAll()) );
@@ -33,10 +42,10 @@ class CancionController{
 		$this->mostarPlantilla ();
 	}
 	private function guardar() {
-		$this->cancion->cargarPorId($_POST [$cancion->getNombreId()]);
+		$this->cancion->cargarPorId($_POST [$this->cancion->getNombreId()]);
 		$this->cancion->setValues ( $_POST );		
-		if(isset($_POST ["passwordNew"]) && $_POST ["passwordNew"]!="")
-			$this->cancion->setPassword(md5($_POST ["passwordNew"]));
+		if(isset($_POST ["contraseñaNew"]) && $_POST ["contraseñaNew"]!="")
+			$this->cancion->setContraseña(md5($_POST ["contraseñaNew"]));
 		$this->cancion->save ();
 		$resp = json_encode ( array (
 				"msg" => "El registro fue grabado. ID=" . $this->cancion->getId (),
@@ -52,7 +61,7 @@ class CancionController{
 				"duracion" => $this->cancion->getDuracion(),
 				"contenido_binario" => $this->cancion->getContenidoBinario(),
 				"mime" => $this->cancion->getMime(),
-				"tama�o_bytes" => $this->cancion->getTama�oBytes(),
+				"tamaño_bytes" => $this->cancion->getTamañoBytes(),
 				"Album_idAlbum" => $this->cancion->getAlbumIdAlbum(),
 				"Genero_idGenero" => $this->cancion->getGeneroIdGenero(),
 				"Usuario_idUsuario" => $this->cancion->getUsuarioIdUsuario(),

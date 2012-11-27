@@ -1,6 +1,6 @@
 <?PHP
 $this->extend ( 'layout' );
-$this->javascripts->add ( '/web/javascript/cancion.js' );
+$this->javascripts->add ( 'umusic/web/javascript/cancion.js' );
 echo @$msg;
 ?><h1>Cancion</h1>
 <input type="button" id="mostrarFormCancion" value="Mostrar Formulario" />
@@ -9,19 +9,19 @@ echo @$msg;
 	<input type="hidden" name="idCancion"		value="" />
 	<table width="100%" border="0">
     <tr>            <td>Nombre</td>
-			<td><input type="text" name="nombre" id="nombre"	value="" /></td>
+			<td><input type="" name="nombre" id="nombre"	value="" /></td>
                     </tr>
         <tr>            <td>Duracion</td>
-			<td><input type="text" name="duracion" id="duracion"	value="" /></td>
+			<td><input type="" name="duracion" id="duracion"	value="" /></td>
                     </tr>
         <tr>            <td>Contenido Binario</td>
-			<td><input type="text" name="contenido_binario" id="contenido_binario"	value="" /></td>
+			<td><input type="" name="contenido_binario" id="contenido_binario"	value="" /></td>
                     </tr>
         <tr>            <td>Mime</td>
-			<td><input type="text" name="mime" id="mime"	value="" /></td>
+			<td><input type="" name="mime" id="mime"	value="" /></td>
                     </tr>
-        <tr>            <td>Tamaño Bytes</td>
-			<td><input type="text" name="tamaño_bytes" id="tamaño_bytes"	value="" /></td>
+        <tr>            <td>TamaÃ±o Bytes</td>
+			<td><input type="" name="tamaÃ±o_bytes" id="tamaÃ±o_bytes"	value="" /></td>
                     </tr>
         <tr>				
 			<td>Album IdAlbum</td>
@@ -64,7 +64,7 @@ echo @$msg;
             			<th>Duracion</th>
             			<th>Contenido Binario</th>
             			<th>Mime</th>
-            			<th>Tamaño Bytes</th>
+            			<th>TamaÃ±o Bytes</th>
             			<th>Album IdAlbum</th>
             			<th>Genero IdGenero</th>
             			<th>Usuario IdUsuario</th>
@@ -77,7 +77,7 @@ echo @$msg;
             			<th>Duracion</th>
             			<th>Contenido Binario</th>
             			<th>Mime</th>
-            			<th>Tamaño Bytes</th>
+            			<th>TamaÃ±o Bytes</th>
             			<th>Album IdAlbum</th>
             			<th>Genero IdGenero</th>
             			<th>Usuario IdUsuario</th>
@@ -87,4 +87,3 @@ echo @$msg;
 	<tbody>       
     </tbody>
 </table>
-?>

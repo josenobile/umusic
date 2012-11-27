@@ -11,7 +11,14 @@ class UsuarioController{
 	}
     public function manejadorDeAcciones() {
 		if (@$_REQUEST ['sEcho'] != "") {
-			die ( $this->usuario->getPager ( )->getJSON () );
+			die ( $this->usuario->getPager (array(
+				   			"Nombre",
+            			"Apellido",
+            			"Email",
+            			"Contraseña",
+            			"Estado",
+            			"Sesion Activa",
+            			) )->getJSON () );
 		}
 		if(isset($_REQUEST["format"])){
 			$_POST["html"] = $this->motorDePlantilas->render ( strtolower($_REQUEST['format']),array("data"=>$this->usuario->getAll()) );
@@ -33,10 +40,10 @@ class UsuarioController{
 		$this->mostarPlantilla ();
 	}
 	private function guardar() {
-		$this->usuario->cargarPorId($_POST [$usuario->getNombreId()]);
+		$this->usuario->cargarPorId($_POST [$this->usuario->getNombreId()]);
 		$this->usuario->setValues ( $_POST );		
-		if(isset($_POST ["passwordNew"]) && $_POST ["passwordNew"]!="")
-			$this->usuario->setPassword(md5($_POST ["passwordNew"]));
+		if(isset($_POST ["contraseñaNew"]) && $_POST ["contraseñaNew"]!="")
+			$this->usuario->setContraseña(md5($_POST ["contraseñaNew"]));
 		$this->usuario->save ();
 		$resp = json_encode ( array (
 				"msg" => "El registro fue grabado. ID=" . $this->usuario->getId (),
@@ -51,7 +58,7 @@ class UsuarioController{
 				"nombre" => $this->usuario->getNombre(),
 				"apellido" => $this->usuario->getApellido(),
 				"email" => $this->usuario->getEmail(),
-				"contrase�a" => $this->usuario->getContrase�a(),
+				"contraseña" => $this->usuario->getContraseña(),
 				"estado" => $this->usuario->getEstado(),
 				"sesion_activa" => $this->usuario->getSesionActiva(),
 		)

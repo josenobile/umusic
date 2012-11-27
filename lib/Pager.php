@@ -168,7 +168,7 @@ class Pager{
 		 * Get data to display
 		 */
 		$sQuery = "
-			SELECT SQL_CALC_FOUND_ROWS {$this->id}, ".str_replace(" , ", " ", implode(", ", $aColumns))."
+			SELECT SQL_CALC_FOUND_ROWS {$this->id}, `".str_replace(" , ", " ", implode("`, `", $aColumns))."`
 			FROM   $sTable
 			$sWhere
 			$sOrder

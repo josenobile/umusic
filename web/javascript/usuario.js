@@ -108,6 +108,8 @@ $(function() {
         null,
         null,
 		null,
+		null,
+		null,
         {
             "bSortable" : false,
             "mDataProp" : null,
@@ -124,6 +126,10 @@ $(function() {
         sPlaceHolder : "foot",
         sRangeSeparator : '~',
         aoColumns : [null, {
+            type : "text"
+        }, {
+            type : "text"
+        }, {
             type : "text"
         }, {
             type : "text"

@@ -1,6 +1,6 @@
 <?PHP
 $this->extend ( 'layout' );
-$this->javascripts->add ( '/web/javascript/album.js' );
+$this->javascripts->add ( 'umusic/web/javascript/album.js' );
 echo @$msg;
 ?><h1>Album</h1>
 <input type="button" id="mostrarFormAlbum" value="Mostrar Formulario" />
@@ -9,7 +9,7 @@ echo @$msg;
 	<input type="hidden" name="idAlbum"		value="" />
 	<table width="100%" border="0">
     <tr>            <td>Nombre</td>
-			<td><input type="text" name="nombre" id="nombre"	value="" /></td>
+			<td><input type="" name="nombre" id="nombre"	value="" /></td>
                     </tr>
         <tr>				
 			<td>Artista IdArtista</td>
@@ -47,4 +47,3 @@ echo @$msg;
 	<tbody>       
     </tbody>
 </table>
-?>
