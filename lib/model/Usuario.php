@@ -4,18 +4,23 @@ class Usuario{
 	private $nombre;
 	private $apellido;
 	private $email;
-	private $contraseÃ±a;
+	private $contraseña;
 	private $estado;
 	private $sesionActiva;
 	protected $con;
 	public function __construct(){
 		$this->con = DBNative::get();
 	}
+    
+    public function _getNombreSignificativo(){
+    	return $this->getNombre();//Formar aqui un String con un nombre para usar en los autocompletar
+    }
+    
 	//Getters
-
 	public function getId(){
 		return $this->idUsuario;
-	}	public function getNombreId(){
+	}    
+	public function getNombreId(){
 		return "idUsuario";
 	}
 	public function getIdUsuario(){
@@ -30,8 +35,8 @@ class Usuario{
 	public function getEmail(){
 		return $this->email;
 	}
-	public function getContraseÃ±a(){
-		return $this->contraseÃ±a;
+	public function getContraseña(){
+		return $this->contraseña;
 	}
 	public function getEstado(){
 		return $this->estado;
@@ -54,8 +59,8 @@ class Usuario{
 	public function setEmail($email){
 		$this->email = $email;
 	}
-	public function setContraseÃ±a($contraseÃ±a){
-		$this->contraseÃ±a = $contraseÃ±a;
+	public function setContraseña($contraseña){
+		$this->contraseña = $contraseña;
 	}
 	public function setEstado($estado){
 		$this->estado = $estado;
@@ -75,20 +80,23 @@ class Usuario{
 	//Guarda o actualiza el objeto en la base de datos, la accion se determina por la clave primaria
 	public function save(){
 		if(empty($this->idUsuario)){			
-						$this->idUsuario = $this->con->autoInsert(array(
+			$this->setCommonValuesInsert();
+			$this->idUsuario = $this->con->autoInsert(array(
 			"nombre" => $this->nombre,
 			"apellido" => $this->apellido,
 			"email" => $this->email,
-			"contraseÃ±a" => $this->contraseÃ±a,
+			"contraseña" => $this->contraseña,
 			"estado" => $this->estado,
 			"sesion_activa" => $this->sesionActiva,
 			),"Usuario");
 			return;
-		}		return $this->con->autoUpdate(array(
+		}
+		$this->setCommonValuesUpdate();
+		return $this->con->autoUpdate(array(
 			"nombre" => $this->nombre,
 			"apellido" => $this->apellido,
 			"email" => $this->email,
-			"contraseÃ±a" => $this->contraseÃ±a,
+			"contraseña" => $this->contraseña,
 			"estado" => $this->estado,
 			"sesion_activa" => $this->sesionActiva,
 			),"Usuario","idUsuario=".$this->getId());
@@ -101,12 +109,28 @@ class Usuario{
 			$this->nombre = $result[0]['nombre'];
 			$this->apellido = $result[0]['apellido'];
 			$this->email = $result[0]['email'];
-			$this->contraseÃ±a = $result[0]['contraseÃ±a'];
+			$this->contraseña = $result[0]['contraseña'];
 			$this->estado = $result[0]['estado'];
 			$this->sesionActiva = $result[0]['sesion_activa'];
 		return $result[0];
 		}
- 	}	public function listar($filtros = array(), $orderBy = '', $limit = "0,30", $exactMatch = false, $fields = '*', $idInKeys = true){
+ 	}
+ 	private function setCommonValuesInsert(){
+		global $session;
+		$this->setOwnerUserId($session->userInfo["user_id"]);
+		$this->setCreatedAt(date("Y-m-d H:i:s"));
+		$ips =  explode(",",!empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER["REMOTE_ADDR"]);
+		$this->setIpAddress(array_shift($ips));
+		$this->setCommonValuesUpdate();
+	}
+	private function setCommonValuesUpdate(){
+		global $session;
+		$this->setUpdaterUserId($session->userInfo["user_id"]);
+		$this->setUpdatedAt(date("Y-m-d H:i:s"));
+		$ips =  explode(",",!empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER["REMOTE_ADDR"]);
+		$this->setIpAddress(array_shift($ips));
+	}
+	public function listar($filtros = array(), $orderBy = '', $limit = "0,30", $exactMatch = false, $fields = '*', $idInKeys = true){
 		$whereA = array();
 		if(!$exactMatch){
 			$campos = $this->con->query("DESCRIBE Usuario");

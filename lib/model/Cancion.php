@@ -5,7 +5,7 @@ class Cancion{
 	private $duracion;
 	private $contenidoBinario;
 	private $mime;
-	private $tamaÃ±oBytes;
+	private $tamañoBytes;
 	private $albumIdAlbum;
 	private $generoIdGenero;
 	private $usuarioIdUsuario;
@@ -13,11 +13,16 @@ class Cancion{
 	public function __construct(){
 		$this->con = DBNative::get();
 	}
+    
+    public function _getNombreSignificativo(){
+    	return $this->getNombre();//Formar aqui un String con un nombre para usar en los autocompletar
+    }
+    
 	//Getters
-
 	public function getId(){
 		return $this->idCancion;
-	}	public function getNombreId(){
+	}    
+	public function getNombreId(){
 		return "idCancion";
 	}
 	public function getIdCancion(){
@@ -35,8 +40,8 @@ class Cancion{
 	public function getMime(){
 		return $this->mime;
 	}
-	public function getTamaÃ±oBytes(){
-		return $this->tamaÃ±oBytes;
+	public function getTamañoBytes(){
+		return $this->tamañoBytes;
 	}
 	public function getAlbumIdAlbum(){
 		return $this->albumIdAlbum;
@@ -89,8 +94,8 @@ class Cancion{
 	public function setMime($mime){
 		$this->mime = $mime;
 	}
-	public function setTamaÃ±oBytes($tamaÃ±oBytes){
-		$this->tamaÃ±oBytes = $tamaÃ±oBytes;
+	public function setTamañoBytes($tamañoBytes){
+		$this->tamañoBytes = $tamañoBytes;
 	}
 	public function setAlbumIdAlbum($albumIdAlbum){
 		$this->albumIdAlbum = $albumIdAlbum;
@@ -113,23 +118,26 @@ class Cancion{
 	//Guarda o actualiza el objeto en la base de datos, la accion se determina por la clave primaria
 	public function save(){
 		if(empty($this->idCancion)){			
-						$this->idCancion = $this->con->autoInsert(array(
+			$this->setCommonValuesInsert();
+			$this->idCancion = $this->con->autoInsert(array(
 			"nombre" => $this->nombre,
 			"duracion" => $this->duracion,
 			"contenido_binario" => $this->contenidoBinario,
 			"mime" => $this->mime,
-			"tamaÃ±o_bytes" => $this->tamaÃ±oBytes,
+			"tamaño_bytes" => $this->tamañoBytes,
 			"Album_idAlbum" => $this->albumIdAlbum,
 			"Genero_idGenero" => $this->generoIdGenero,
 			"Usuario_idUsuario" => $this->usuarioIdUsuario,
 			),"Cancion");
 			return;
-		}		return $this->con->autoUpdate(array(
+		}
+		$this->setCommonValuesUpdate();
+		return $this->con->autoUpdate(array(
 			"nombre" => $this->nombre,
 			"duracion" => $this->duracion,
 			"contenido_binario" => $this->contenidoBinario,
 			"mime" => $this->mime,
-			"tamaÃ±o_bytes" => $this->tamaÃ±oBytes,
+			"tamaño_bytes" => $this->tamañoBytes,
 			"Album_idAlbum" => $this->albumIdAlbum,
 			"Genero_idGenero" => $this->generoIdGenero,
 			"Usuario_idUsuario" => $this->usuarioIdUsuario,
@@ -144,13 +152,29 @@ class Cancion{
 			$this->duracion = $result[0]['duracion'];
 			$this->contenidoBinario = $result[0]['contenido_binario'];
 			$this->mime = $result[0]['mime'];
-			$this->tamaÃ±oBytes = $result[0]['tamaÃ±o_bytes'];
+			$this->tamañoBytes = $result[0]['tamaño_bytes'];
 			$this->albumIdAlbum = $result[0]['Album_idAlbum'];
 			$this->generoIdGenero = $result[0]['Genero_idGenero'];
 			$this->usuarioIdUsuario = $result[0]['Usuario_idUsuario'];
 		return $result[0];
 		}
- 	}	public function listar($filtros = array(), $orderBy = '', $limit = "0,30", $exactMatch = false, $fields = '*', $idInKeys = true){
+ 	}
+ 	private function setCommonValuesInsert(){
+		global $session;
+		$this->setOwnerUserId($session->userInfo["user_id"]);
+		$this->setCreatedAt(date("Y-m-d H:i:s"));
+		$ips =  explode(",",!empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER["REMOTE_ADDR"]);
+		$this->setIpAddress(array_shift($ips));
+		$this->setCommonValuesUpdate();
+	}
+	private function setCommonValuesUpdate(){
+		global $session;
+		$this->setUpdaterUserId($session->userInfo["user_id"]);
+		$this->setUpdatedAt(date("Y-m-d H:i:s"));
+		$ips =  explode(",",!empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER["REMOTE_ADDR"]);
+		$this->setIpAddress(array_shift($ips));
+	}
+	public function listar($filtros = array(), $orderBy = '', $limit = "0,30", $exactMatch = false, $fields = '*', $idInKeys = true){
 		$whereA = array();
 		if(!$exactMatch){
 			$campos = $this->con->query("DESCRIBE Cancion");

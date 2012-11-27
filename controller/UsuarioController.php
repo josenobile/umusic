@@ -1,25 +1,27 @@
 <?PHP
-class UsuarioController {
+class UsuarioController{
 	private $usuario;
 	private $aParams;
 	private $motorDePlantilas;
 	public function UsuarioController(sfTemplateEngine &$engine) {
-		$this->usuario = new UsuarioModel ();
+		$this->usuario = new UsuarioModel();
 		$this->aParams = Array ();
 		$this->motorDePlantilas = $engine;
+		
 	}
-	public function manejadorDeAcciones() {
+    public function manejadorDeAcciones() {
 		if (@$_REQUEST ['sEcho'] != "") {
-			die ( $this->usuario->getPager ( array (
-				"idUsuario",
-				"Nombre",
-				"Apellido",
-				"Email",
-				"Estado"
-			) )->getJSON () );
+			die ( $this->usuario->getPager ( )->getJSON () );
+		}
+		if(isset($_REQUEST["format"])){
+			$_POST["html"] = $this->motorDePlantilas->render ( strtolower($_REQUEST['format']),array("data"=>$this->usuario->getAll()) );
+			require "generaFormat.php";
+		}
+		if (@$_REQUEST ["autoCompleteTerm"] != "") {
+                    die(json_encode($this->usuario->listar(array($_REQUEST ["autoCompleteTerm"] => $_GET ['q']), $_REQUEST ["autoCompleteTerm"], "0," . $_REQUEST["limit"], false, $fields = $_REQUEST ["autoCompleteTerm"].", ".$this->usuario->getNombreId())));
 		}
 		if ($_SERVER ["REQUEST_METHOD"] == "POST") {
-			$this->guardar ( $_POST ["idUsuario"] );
+			$this->guardar();
 		}
 		if (@$_GET ["accion"] == "eliminar" && $_GET ["id"] > 0) {
 			$this->eliminar ( intval ( $_GET ["id"] ) );
@@ -27,17 +29,14 @@ class UsuarioController {
 		if (@$_GET ["accion"] == "editar" && $_GET ["id"] > 0) {
 			$this->cargarPorId ( intval ( $_GET ["id"] ) );
 			die ( json_encode ( $this->aParams ["usuario"] ) );
-		}
+		}		
 		$this->mostarPlantilla ();
 	}
-	private function guardar($id) {
-		$this->usuario->cargarPorId ( $id );
-		$this->usuario->setValues ( $_POST );
-		if($this->usuario->getEstado()=='')
-			$this->usuario->setEstado(1);
-		if($this->usuario->getSesionActiva()=="")
-			$this->usuario->setSesionActiva(0);
-		$this->usuario->setContraseña(md5($this->usuario->getContraseña()));
+	private function guardar() {
+		$this->usuario->cargarPorId($_POST [$usuario->getNombreId()]);
+		$this->usuario->setValues ( $_POST );		
+		if(isset($_POST ["passwordNew"]) && $_POST ["passwordNew"]!="")
+			$this->usuario->setPassword(md5($_POST ["passwordNew"]));
 		$this->usuario->save ();
 		$resp = json_encode ( array (
 				"msg" => "El registro fue grabado. ID=" . $this->usuario->getId (),
@@ -48,13 +47,13 @@ class UsuarioController {
 	public function cargarPorId($id) {
 		$this->usuario->cargarPorId ( $id );
 		$this->aParams ["usuario"] = array (
-				"idUsuario" => $this->usuario->getId (),
-				"nombre" => $this->usuario->getNombre (),
-				"apellido" => $this->usuario->getApellido (),
-				"email" => $this->usuario->getEmail (),
-				"contraseña" => $this->usuario->getContraseña (),
-				"estado" => $this->usuario->getEstado (),
-				"sesionActiva" => $this->usuario->getSesionActiva ()
+				"idUsuario" => $this->usuario->getIdUsuario(),
+				"nombre" => $this->usuario->getNombre(),
+				"apellido" => $this->usuario->getApellido(),
+				"email" => $this->usuario->getEmail(),
+				"contrase�a" => $this->usuario->getContrase�a(),
+				"estado" => $this->usuario->getEstado(),
+				"sesion_activa" => $this->usuario->getSesionActiva(),
 		)
 		;
 	}

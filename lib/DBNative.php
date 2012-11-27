@@ -19,7 +19,7 @@ class DBNative {
 	public $debug = false; // print query and answer (boolean or rows number)
 	public $ajaxDebug = false; // Do debug in ajax request, if is ON, json answer
 	// will not working on browser
-	private function DBNative($DSN = false, $host = false, $user = false, $passwd = false, $db = false, $mailSupport = 'jose.nobile@gmail.com', $debugIP = "181.53.154.20", $userErrorMsg = "Internal server error") {
+	private function DBNative($DSN = false, $host = false, $user = false, $passwd = false, $db = false, $mailSupport = 'it@umusic.com', $debugIP = "127.0.0.1", $userErrorMsg = "Internal server error") {
 		$this->printDebug(print_r($_REQUEST,true));
 		$this->mailSupport = $mailSupport;
 		if ($this->mailSupport == '') {
@@ -31,6 +31,8 @@ class DBNative {
 		$this->db = $db;
 		$this->DSN = $DSN;
 		$this->ajax = (((isset ( $_SERVER ['HTTP_X_REQUESTED_WITH'] ) && strtolower ( $_SERVER ['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest') === false) ? false : true);
+		if($this->ajax)
+			ini_set("html_errors","Off");
 		if (! empty ( $DSN )) {
 			$aTmp = parse_url ( $DSN );
 			if (empty ( $aTmp ))
@@ -55,7 +57,6 @@ class DBNative {
 	}
 	private function error($subject, $details) {
 		ob_start ();
-		echo "DSN: ".$this->DSN . "<br />\r\n";
 		echo "Last Query: <br />\r\n" . $this->lastQuery . "<br />\r\n";
 		echo "BackTrace: ";
 		debug_print_backtrace ();
@@ -297,6 +298,10 @@ class DBNative {
 	}
 	public function getLastAffectedRows() {
 		return mysql_affected_rows ( $this->link );
+	}
+	
+	public function getDatabaseName(){
+		return $this->db;	
 	}
 	/**
 	 * Quote and scape a values

@@ -7,11 +7,16 @@ class Album{
 	public function __construct(){
 		$this->con = DBNative::get();
 	}
+    
+    public function _getNombreSignificativo(){
+    	return $this->getNombre();//Formar aqui un String con un nombre para usar en los autocompletar
+    }
+    
 	//Getters
-
 	public function getId(){
 		return $this->idAlbum;
-	}	public function getNombreId(){
+	}    
+	public function getNombreId(){
 		return "idAlbum";
 	}
 	public function getIdAlbum(){
@@ -55,12 +60,15 @@ class Album{
 	//Guarda o actualiza el objeto en la base de datos, la accion se determina por la clave primaria
 	public function save(){
 		if(empty($this->idAlbum)){			
-						$this->idAlbum = $this->con->autoInsert(array(
+			$this->setCommonValuesInsert();
+			$this->idAlbum = $this->con->autoInsert(array(
 			"nombre" => $this->nombre,
 			"Artista_idArtista" => $this->artistaIdArtista,
 			),"Album");
 			return;
-		}		return $this->con->autoUpdate(array(
+		}
+		$this->setCommonValuesUpdate();
+		return $this->con->autoUpdate(array(
 			"nombre" => $this->nombre,
 			"Artista_idArtista" => $this->artistaIdArtista,
 			),"Album","idAlbum=".$this->getId());
@@ -74,7 +82,23 @@ class Album{
 			$this->artistaIdArtista = $result[0]['Artista_idArtista'];
 		return $result[0];
 		}
- 	}	public function listar($filtros = array(), $orderBy = '', $limit = "0,30", $exactMatch = false, $fields = '*', $idInKeys = true){
+ 	}
+ 	private function setCommonValuesInsert(){
+		global $session;
+		$this->setOwnerUserId($session->userInfo["user_id"]);
+		$this->setCreatedAt(date("Y-m-d H:i:s"));
+		$ips =  explode(",",!empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER["REMOTE_ADDR"]);
+		$this->setIpAddress(array_shift($ips));
+		$this->setCommonValuesUpdate();
+	}
+	private function setCommonValuesUpdate(){
+		global $session;
+		$this->setUpdaterUserId($session->userInfo["user_id"]);
+		$this->setUpdatedAt(date("Y-m-d H:i:s"));
+		$ips =  explode(",",!empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER["REMOTE_ADDR"]);
+		$this->setIpAddress(array_shift($ips));
+	}
+	public function listar($filtros = array(), $orderBy = '', $limit = "0,30", $exactMatch = false, $fields = '*', $idInKeys = true){
 		$whereA = array();
 		if(!$exactMatch){
 			$campos = $this->con->query("DESCRIBE Album");
