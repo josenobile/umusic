@@ -10,7 +10,10 @@ class UsuarioModel extends Usuario {
 		$where = implode ( " AND ", $whereA );
 		if ($where == '')
 			$where = 1;
-		$pager = new Pager ( $this->con, "(SELECT idUsuario As idUsuario, nombre as Nombre, apellido as Apellido, email as Email, estado AS Estado, contraseña AS Contraseña, sesion_activa AS 'Sesion Activa' FROM Usuario WHERE {$where}) a", $columns, $this->getNombreId () );
+		$pager = new Pager ( $this->con, 
+							"(SELECT idUsuario As idUsuario, nombre as Nombre, apellido as Apellido, email as Email, estado AS Estado 
+							FROM Usuario WHERE {$where}) a", $columns, $this->getNombreId () );
 		return $pager;
 	}
+	
 }?>

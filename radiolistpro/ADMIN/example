@@ -1,0 +1,232 @@
+<?php 
+//error_reporting(E_ALL); 
+$debug = false; 
+if(isset($_GET['refreshrate'])){ 
+    $refreshrate = $_GET['refreshrate']; 
+}elseif(isset($_POST['refreshrate'])){ 
+    $refreshrate = $_post['refreshrate']; 
+}else{ 
+    $refreshrate = "30"; 
+} 
+    print "<html><title>Winamp Class Wrapper!</title>\n<body bgcolor=\"#CFCFC\">\n"; 
+require("class.winampstatus.php"); 
+// instance the class with : username,pass  , first server     , fallback server (optional) 
+if($debug){ 
+    print "<pre>creating new winamp class\n"; 
+} 
+if(isset($_POST['server'])){ 
+    $server = $_POST['server']; 
+}elseif(isset($_GET['server'])){ 
+    $server = $_GET['server']; 
+} 
+$status = new winamp_control("user","pass","firstserver","secondserver",999,$debug); 
+if(!$status->error){ 
+    if($debug){ 
+    print "Calling getstatus\n"; 
+    } 
+    if($debug){ 
+    print "Thread = {$status->Thread}\n"; 
+    } 
+    /* 
+     * usefull but not something that you want to expose to everyone, this should be done in a password 
+     *  protected directory, so that people can't just start and stop your playing at any time ;) 
+     * The following statements check if you clicked a button on the page, if you did it does the respective 
+     *  things (i.e. play, pause, next, back, search, change the volume etc...)
+     */ 
+    if(isset($_GET['thing'])){ // if you don't have superglobals enabled (i.e. you have register_golbals off change this to $thing)
+    switch($_GET['thing']){    // change this to $thing as well
+     case 'search':
+        if(isset($_GET['searchstring'])){ // if you don't have register_globals on turn this to $searchstring
+        $items = $status->findsong($_GET['searchstring'],"<a href=\"classwrapper.php?thing=play&id=%number%\">%artist% - %title%%if%(%time%)? (%time% Minutes):%if%</a>"); 
+        } 
+        break; 
+     case 'play': 
+        if(isset($_GET['id'])){ // again, no register_globals turn this to $id
+        $status->controlme("play",$_GET['id']);  // change this as well to $id
+        }else{ 
+        $status->controlme("play"); 
+        } 
+        break; 
+     case 'stop': 
+        print "Stopping Winamp...<br>\n"; 
+        flush(); 
+        $status->controlme("stop"); 
+        break; 
+     case 'pause': 
+        print "Pausing Winamp....<br>\n"; 
+        flush(); 
+        $status->controlme("pause"); 
+        break; 
+     case 'back': 
+        print "Going Back a song...<br>\n"; 
+        flush(); 
+        $status->controlme("back"); 
+        break; 
+     case 'next': 
+        print "Going to the Next Song...<br>\n"; 
+        flush(); 
+        $status->controlme("next"); 
+        break; 
+     case 'shuffle': 
+        print "Toggleing Shuffle...<br>\n"; 
+        flush(); 
+        $status->controlme("shuffle"); 
+        break; 
+     case 'repeat': 
+        print "Toggleing Repeat...<br>\n"; 
+        flush(); 
+        $status->controlme("repeat"); 
+        break; 
+     case 'volume-up': 
+        print "Moving the volume up...<br>\n"; 
+        flush(); 
+        $status->controlme("volume up"); 
+        break; 
+     case 'volume-down': 
+        print "Moving the volume down...<br>\n"; 
+        flush(); 
+        $status->controlme("volume down"); 
+        break; 
+     case 'volume': 
+        if(isset($_GET['id'])){ 
+        print "Setting The volume to {$_GET['id']}...<br>\n"; 
+        flush(); 
+        $status->controlme("volume",$_GET['id']); 
+        } 
+        break; 
+     default: 
+    } 
+    } 
+    print "<DIV STYLE=\"margin: 0.125 em; padding: 0.125 em; border-width: thin; border-color: black; border-style: solid\">\n"; 
+    Print "<b>Winamp is currently {$status->status} ". (($status->status == "PLAYING")?"the Song : <br>\n":"on <br>\n") ."<HR>"; 
+    print "{$status->artist} - {$status->title}<br></b>\n"; 
+    print "</DIV>"; 
+    if(isset($_GET['showlist']) or isset($_POST['showlist'])){ 
+    print "<a href=\"{$_SERVER['PHP_SELF']}?showlist=true\">Refresh</a><br>\n"; 
+    }else{ 
+    print "<a href=\"{$_SERVER['PHP_SELF']}?refreshrate={$refreshrate}\">Refresh</a><br>\n"; 
+    } 
+    print "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"252\">\n"; 
+    print "  <tr>\n"; 
+    print "    <td width=\"54\" height=\"22\">\n"; 
+    print "      <form method=\"get\" action=\"{$_SERVER['PHP_SELF']}\">\n"; 
+    $action = "back"; 
+    print "       <input type=\"hidden\" name=\"thing\" value=\"$action\">\n"; 
+    print "       <input type=\"image\" name=\"thing\" value=\"back\" src=\"http://images.funyon.com/pnggen.php?id=2&text=%3c%20Back\" alt=\"Click Me to go back a song\" width=\"54\" height=\"15\" align=\"top\">\n"; 
+    print "      </form>\n    </td>\n"; 
+    print "    <td width=\"36\" height=\"22\">\n"; 
+    print "      <form method=\"get\" action=\"{$_SERVER['PHP_SELF']}\">\n"; 
+    $action = "play"; 
+    print "       <input type=\"hidden\" name=\"thing\" value=\"$action\">\n"; 
+    print "       <input type=\"image\" name=\"thing\" value=\"play\" src=\"http://images.funyon.com/pnggen.php?id=2&text=Play\" alt=\"Click Me to play this song\" width=\"36\" height=\"15\" align=\"top\">\n"; 
+    print "     </form>\n    </td>\n"; 
+    print "    <td width=\"54\" height=\"22\">\n"; 
+    print "      <form method=\"get\" action=\"{$_SERVER['PHP_SELF']}\">\n"; 
+    $action = "pause"; 
+    print "       <input type=\"hidden\" name=\"thing\" value=\"$action\">\n"; 
+    print "       <input type=\"image\" name=\"thing\" value=\"pause\" src=\"http://images.funyon.com/pnggen.php?id=2&text=Pause\" alt=\"Click Me to pause this song\" width=\"54\" height=\"15\" align=\"top\">\n"; 
+    print "     </form>\n    </td>\n"; 
+    print "      <td width=\"54\" height=\"22\">\n"; 
+    print "      <form method=\"get\" action=\"{$_SERVER['PHP_SELF']}\">\n"; 
+    $action = "stop"; 
+    print "       <input type=\"hidden\" name=\"thing\" value=\"$action\">\n"; 
+    print "       <input type=\"image\" name=\"thing\" value=\"stop\" src=\"http://images.funyon.com/pnggen.php?id=2&text=Stop%20%20\" alt=\"Click Me to Stop the currently playing song\" width=\"54\" height=\"15\" align=\"top\">\n"; 
+    print "      </form>\n    </td>\n"; 
+    print "    <td width=\"54\" height=\"22\">\n"; 
+    print "      <form method=\"get\" action=\"{$_SERVER['PHP_SELF']}\">\n"; 
+    $action = "next"; 
+    print "       <input type=\"hidden\" name=\"thing\" value=\"$action\">\n"; 
+    print "       <input type=\"image\" name=\"thing\" value=\"next\" src=\"http://images.funyon.com/pnggen.php?id=2&text=Next%20%3E\" alt=\"Click Me to play the next song\" width=\"54\" height=\"15\" align=\"top\">\n"; 
+    print "      </form>\n    </td>\n"; 
+    print "  </tr>\n"; 
+    print "</table>\n"; 
+    if($status->shuffle){ 
+    $action = "shuffle"; 
+    print "Shuffle is {$status->shuffle}\n"; 
+    print "<form name=\"stuff\" method=\"get\" action=\"{$_SERVER['PHP_SELF']}\">\n";  
+    print " <input type=\"hidden\" name=\"thing\" value=\"$action\">\n"; 
+    print " <input type=\"submit\" name=\"submit\" value=\"Press me to Toggle Shuffle!\">\n</form>\n"; 
+    } 
+    if($status->repeat){ 
+    $action = "repeat"; 
+    print "Repeat is {$status->repeat} \n"; 
+    print "<form name=\"stuff\" method=\"get\" action=\"{$_SERVER['PHP_SELF']}\">\n";  
+    print " <input type=\"hidden\" name=\"thing\" value=\"$action\">\n"; 
+    print " <input type=\"submit\" name=\"submit\" value=\"Press me to Toggle Repeat!\">\n</form>\n"; 
+    } 
+    if($status->fadeoutcontrol){ 
+    $action = "fade"; 
+    print "Fading is Enabled! \n"; 
+    print "<form name=\"stuff\" method=\"get\" action=\"{$_SERVER['PHP_SELF']}\">\n";  
+    print " <input type=\"hidden\" name=\"thing\" value=\"$action\">\n"; 
+    print " <input type=\"submit\" name=\"submit\" value=\"Press me to Fade the song to a stop!\">\n</form>\n"; 
+    } 
+    print "</table>\n"; 
+    if($status->volumecontrol){ 
+    print "<DIV STYLE=\"margin: 0.125 em; padding: 0.125 em; border-width: thin; border-color: black; border-style: solid\">\n"; 
+    print " Volume Control!<HR>\n"; 
+    print " <a href=\"{$_SERVER['PHP_SELF']}?thing=volume-up\">Click Here</a> to raise the volume<br>\n"; 
+    print " <a href=\"{$_SERVER['PHP_SELF']}?thing=volume-down\">Click Here</a> to lower the volume<br>\n"; 
+    print " <form name=\"stuff\" method=\"get\" action=\"{$_SERVER['PHP_SELF']}\">\n";  
+    print "  <input type=\"text\" name=\"id\" value=\"\"> Type a value between 0 and 255 for the volume, 50% volume is 129\n"; 
+    print "  <input type=\"hidden\" name=\"thing\" value=\"volume\"><br>\n"; 
+    print "  <input type=\"submit\" name=\"submit\" value=\"Set Volume!\">\n </form>\n"; 
+    print "</DIV>\n"; 
+    } 
+    if(isset($_GET['searchstring']) or isset($_POST['searchstring'])){ 
+    print "searchstring is set!!!!\n<br>"; 
+    print "<DIV STYLE=\"margin: 0.125 em; padding: 0.125 em; border-width: thin; border-color: black; border-style: solid\">\n"; 
+    print " Search Results for {$_GET['searchstring']}!<HR>\n"; 
+    if($items !=false){ 
+        print_r($items); 
+    }else{ 
+        print $status->error; 
+    } 
+    if(is_array($items)){ 
+        print " Found the following songs....<br>"; 
+        foreach($items as $song){ 
+        print "$song<br>"; 
+        } 
+    }else{ 
+        print " No Songs found!<br>"; 
+//        print " <font size=\"-3\">Please note that this may take a while</font>"; 
+    } 
+    print " <form name=\"stuff\" method=\"get\" action=\"{$_SERVER['PHP_SELF']}\">\n";  
+    print "  <input type=\"text\" name=\"searchstring\" value=\"\"> Type ina song or artist name to search for\n"; 
+    print "  <input type=\"hidden\" name=\"thing\" value=\"search\"><br>\n"; 
+    print "  <input type=\"submit\" name=\"submit\" value=\"Search\">\n </form>\n"; 
+    print "</DIV>\n"; 
+    }else{ 
+    print "<DIV STYLE=\"margin: 0.125 em; padding: 0.125 em; border-width: thin; border-color: black; border-style: solid\">\n"; 
+    print " Search for Songs!<HR>\n"; 
+    print " <font size=\"-2\">Please note that this may take a while</font>"; 
+    print " <form name=\"stuff\" method=\"get\" action=\"{$_SERVER['PHP_SELF']}\">\n";  
+    print "  <input type=\"text\" name=\"searchstring\" value=\"\"> Type ina song or artist name to search for\n"; 
+    print "  <input type=\"hidden\" name=\"thing\" value=\"search\"><br>\n"; 
+    print "  <input type=\"submit\" name=\"submit\" value=\"Search\">\n </form>\n"; 
+    print "</DIV>\n"; 
+    } 
+    if(isset($_GET['showlist']) or isset($_POST['showlist'])){ 
+    $items = $status->listitems("<a href=\"classwrapper.php?thing=play&id=%number%\">%artist% - %title%%if%(%time%)? (%time% Minutes):%if%</a>"); 
+    if($debug){ 
+        print_r($items); 
+    } 
+    foreach($items as $song){ 
+        print "$song<br>\n"; 
+    } 
+    }else{ 
+    print "<DIV STYLE=\"margin: 0.125 em; padding: 0.125 em; border-width: thin; border-color: black; border-style: solid\">\n"; 
+    print " See All the Songs!!!!!<HR>\n"; 
+    print " <form name=\"stuff\" method=\"get\" action=\"{$_SERVER['PHP_SELF']}\" target=\"_BLANK\">\n";  
+    print "  <input type=\"hidden\" name=\"showlist\" value=\"true\">\n"; 
+    print "  <input type=\"submit\" name=\"submit\" value=\"See the list of mp3s!\">\n </form>\n"; 
+    print "</DIV>\n"; 
+    } 
+    /**/ 
+}else{ 
+    print "The Following Error Occurred {$status->error}\n"; 
+} 
+// you must close the connection to winamp or winamp will crash! 
+$status->closefp(); 
+print "it took ".$status->gettime()." seconds to prosess this page ;)"; 
+?> 

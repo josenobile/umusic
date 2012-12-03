@@ -101,14 +101,10 @@ $(function() {
         "sPaginationType" : "full_numbers",
         "sServerMethod" : "POST",
         "aoColumns" : [
-        /* null, */{
-            "bVisible" : false
-        },
+        { "bVisible" : false},
         null,
         null,
         null,
-		null,
-		null,
 		null,
         {
             "bSortable" : false,
@@ -126,10 +122,6 @@ $(function() {
         sPlaceHolder : "foot",
         sRangeSeparator : '~',
         aoColumns : [null, {
-            type : "text"
-        }, {
-            type : "text"
-        }, {
             type : "text"
         }, {
             type : "text"

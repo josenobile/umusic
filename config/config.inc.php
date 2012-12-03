@@ -14,7 +14,7 @@ header ( 'Cache-Control: post-check=0, pre-check=0', false );
 header ( 'Cache-control: private', false ); // IE 6 FIX
 header ( 'Pragma: no-cache' );
 ini_set ( "include_path", ini_get ( "include_path" ) . PATH_SEPARATOR . realpath ( dirname ( __file__ ) . '/..' ) . PATH_SEPARATOR . realpath ( dirname ( __file__ ) . '/../lib' ).PATH_SEPARATOR."./" );
-set_time_limit ( 3600 );
+set_time_limit ( 10 );
 error_reporting ( -1 );
 ini_set("display_errors","On");
 ini_set ( "memory_limit", "2000M" );

@@ -1,87 +1,70 @@
 <?PHP
 $this->extend ( 'layout' );
 $this->javascripts->add ( 'umusic/web/javascript/cancion.js' );
+   
 echo @$msg;
 ?><h1>Cancion</h1>
-<input type="button" id="mostrarFormCancion" value="Mostrar Formulario" />
-<form action="" method="post"
-	enctype="application/x-www-form-urlencoded" id="formularioCancion">
-	<input type="hidden" name="idCancion"		value="" />
+<input type="button" id="mostrarFormCancion" value="Nueva Cancion" />
+<form action="" method="post" enctype="multipart/form-data" id="formularioCancion">
+	<input type="hidden" name="idCancion"	value="" />
 	<table width="100%" border="0">
-    <tr>            <td>Nombre</td>
-			<td><input type="" name="nombre" id="nombre"	value="" /></td>
-                    </tr>
-        <tr>            <td>Duracion</td>
-			<td><input type="" name="duracion" id="duracion"	value="" /></td>
-                    </tr>
-        <tr>            <td>Contenido Binario</td>
-			<td><input type="" name="contenido_binario" id="contenido_binario"	value="" /></td>
-                    </tr>
-        <tr>            <td>Mime</td>
-			<td><input type="" name="mime" id="mime"	value="" /></td>
-                    </tr>
-        <tr>            <td>Tamaño Bytes</td>
-			<td><input type="" name="tamaño_bytes" id="tamaño_bytes"	value="" /></td>
-                    </tr>
-        <tr>				
-			<td>Album IdAlbum</td>
-			<td>
-            	<input type="hidden" name="Album_idAlbum" id="Album_idAlbum"	value="" />
-	            <input type="text" name="AlbumAutocompletar" id="AlbumAutocompletar" value="" />
-            </td>
-		
-               </tr>
-        <tr>				
-			<td>Genero IdGenero</td>
-			<td>
-            	<input type="hidden" name="Genero_idGenero" id="Genero_idGenero"	value="" />
-	            <input type="text" name="GeneroAutocompletar" id="GeneroAutocompletar" value="" />
-            </td>
-		
-               </tr>
-        <tr>				
-			<td>Usuario IdUsuario</td>
-			<td>
-            	<input type="hidden" name="Usuario_idUsuario" id="Usuario_idUsuario"	value="" />
-	            <input type="text" name="UsuarioAutocompletar" id="UsuarioAutocompletar" value="" />
-            </td>
-		
-               </tr>
-        <tr>
-			<td>&nbsp;</td>
-			<td><input type="submit" value="Enviar" />
+    	<tr>
+			<td>Nombre</td>
+			<td><input type="text" name="nombre" id="nombre" value="" /></td>
+        </tr>
+        <tr>            
+			<td>File</td>
+			<td><input type="file" name="cancion" id="cancion"	value="" />
+				<input type="submit" value="leer tags"  name="leerTags" class="leerTags" /></td>
+       </tr>
+	   <tr>
+	   		<td colspan="2"><div id="resultTags"></div></td>
+	   </tr>
+       <tr>				
+			<td>Album</td>
+			<td><input type="hidden" name="Album_idAlbum" id="Album_idAlbum"	value="" />
+	            <input type="text" name="AlbumAutocompletar" id="AlbumAutocompletar" value="" /></td>
+       </tr>
+       <tr>				
+			<td>Genero</td>
+			<td><input type="hidden" name="Genero_idGenero" id="Genero_idGenero"	value="" />
+	            <input type="text" name="GeneroAutocompletar" id="GeneroAutocompletar" value="" /></td>
+       </tr>
+       <tr>
+			<td colspan="2"><input type="submit" value="Enviar" />
             	<input type="reset" value="Resetear" /></td>
 		</tr>
 	</table>
 </form>
-
 <div id="result"></div>
 
 <table id="tCancion">
 	<thead>
-		<tr>   			<th>IdCancion</th>
-            			<th>Nombre</th>
-            			<th>Duracion</th>
-            			<th>Contenido Binario</th>
-            			<th>Mime</th>
-            			<th>Tamaño Bytes</th>
-            			<th>Album IdAlbum</th>
-            			<th>Genero IdGenero</th>
-            			<th>Usuario IdUsuario</th>
-            			<th>Action</th>
+		<tr>
+			<th>IdCancion</th>
+			<th>URL</th>
+			<th>Nombre</th>
+			<th>Duracion</th>
+			<th>Mime</th>
+			<th>TamañoBytes</th>
+			<th>Album</th>
+			<th>Genero</th>
+			<th>Usuario</th>
+			<th>Action</th>
 		</tr>
 	</thead>
 	<tfoot>
-		<tr>   			<th>IdCancion</th>
-            			<th>Nombre</th>
-            			<th>Duracion</th>
-            			<th>Contenido Binario</th>
-            			<th>Mime</th>
-            			<th>Tamaño Bytes</th>
-            			<th>Album IdAlbum</th>
-            			<th>Genero IdGenero</th>
-            			<th>Usuario IdUsuario</th>
-            			<th>Action</th>
+		<tr>
+			<th>IdCancion</th>
+			<th>URL</th>
+			<th>Nombre</th>
+			<th>Duracion</th>
+			<th>Mime</th>
+			<th>TamañoBytes</th>
+			<th>Album</th>
+			<th>Genero</th>
+			<th>Usuario</th>
+			<th>Action</th>
 		</tr>
 	</tfoot>
 	<tbody>       

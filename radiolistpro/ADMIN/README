@@ -1,0 +1,10 @@
+The WiampControler Class is a usefull class for the purpose of controling winamp. It has a forum which you can get help at:
+http://groups.funyon.com/index.php?c=7
+To use the class simply copy the class.winampstatus.php file into your favorite include place then connect to the class using this:
+$somevar = new winamp_control("user","pass","server1","server2");
+then get the status
+$somvar->getstatus();
+... rest of script ...
+you must use:
+$somvar->closefp();
+at the end off all the files that you instanced the winampcontroler in, or winamp will crash after a few times of accessing winamp.

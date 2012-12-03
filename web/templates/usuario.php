@@ -3,33 +3,45 @@ $this->extend ( 'layout' );
 $this->javascripts->add ( 'umusic/web/javascript/usuario.js' );
 echo @$msg;
 ?><h1>Usuario</h1>
+
 <input type="button" id="mostrarFormUsuario" value="Mostrar Formulario" />
+
 <form action="" method="post"
 	enctype="application/x-www-form-urlencoded" id="formularioUsuario">
-	<input type="hidden" name="idUsuario"		value="" />
-	<table width="100%" border="0">
-    <tr>            <td>Nombre</td>
-			<td><input type="" name="nombre" id="nombre"	value="" /></td>
+	<input type="hidden" name="idUsuario"
+		value="" />
+	<table width="200" border="0">
+		<tr>
+			<td>Nombres</td>
+			<td><input type="text" name="nombre" id="nombre"
+				value="" /></td>
                     </tr>
-        <tr>            <td>Apellido</td>
-			<td><input type="" name="apellido" id="apellido"	value="" /></td>
+		<tr>
+			<td>Apellidos</td>
+			<td><input type="text" name="apellido" id="apellido"
+				value="" /></td>
                     </tr>
-        <tr>            <td>Email</td>
-			<td><input type="" name="email" id="email"	value="" /></td>
+        <tr>
+			<td>Email</td>
+			<td><input type="text" name="email" id="email"
+				value="" /></td>
                     </tr>
-        <tr>            <td>Contraseña</td>
-			<td><input type="password" name="contraseña" id="contraseña"	value="" /></td>
+        <tr>
+			<td>Contraseña</td>
+			<td><input type="password" name="contraseña" id="contraseña"
+				value="" /></td>
                     </tr>
-        <tr>            <td>Estado</td>
-			<td><input type="" name="estado" id="estado"	value="" /></td>
-                    </tr>
-        <tr>            <td>Sesion Activa</td>
-			<td><input type="" name="sesion_activa" id="sesion_activa"	value="" /></td>
+		<tr>
+			<td>Estado</td>
+			<td><select name="estado">
+					<option value="1">Activo</option>
+					<option value="0">Inactivo></option>
+				</select></td>
                     </tr>
         <tr>
 			<td>&nbsp;</td>
-			<td><input type="submit" value="Enviar" />
-            	<input type="reset" value="Resetear" /></td>
+			<td><input type="submit" value="Enviar" /><input type="button"
+				class="clear" value="Limpiar" /></td>
 		</tr>
 	</table>
 </form>
@@ -38,24 +50,22 @@ echo @$msg;
 
 <table id="tUsuario">
 	<thead>
-		<tr>   			<th>IdUsuario</th>
+		<tr>
+			<th>idUsuario</th>
             			<th>Nombre</th>
             			<th>Apellido</th>
             			<th>Email</th>
-            			<th>Contraseña</th>
             			<th>Estado</th>
-            			<th>Sesion Activa</th>
             			<th>Action</th>
 		</tr>
 	</thead>
 	<tfoot>
-		<tr>   			<th>IdUsuario</th>
+		<tr>
+			<th>idUsuario</th>
             			<th>Nombre</th>
             			<th>Apellido</th>
             			<th>Email</th>
-            			<th>Contraseña</th>
             			<th>Estado</th>
-            			<th>Sesion Activa</th>
             			<th>Action</th>
 		</tr>
 	</tfoot>

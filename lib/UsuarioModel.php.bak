@@ -1,0 +1,16 @@
+<?PHP
+class UsuarioModel extends Usuario {
+	public function _construct() {
+		parent::__construct ();
+	}
+	public function getPager(Array $columns, Array $filters = array()) {
+		$whereA = array ();
+		foreach ( $filters as $filter => $value )
+			$whereA [] = $filter . " = " . $this->con->quote ( $value );
+		$where = implode ( " AND ", $whereA );
+		if ($where == '')
+			$where = 1;
+		$pager = new Pager ( $this->con, "(SELECT idUsuario As idUsuario, nombre as Nombre, apellido as Apellido, email as Email, estado AS Estado, contraseña AS Contraseña, sesion_activa AS 'Sesion Activa' FROM Usuario WHERE {$where}) a", $columns, $this->getNombreId () );
+		return $pager;
+	}
+}?>

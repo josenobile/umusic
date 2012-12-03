@@ -1,2 +1,2 @@
 en my.ini
-lower_case_table_names=0 en development version
+lower_case_table_names=2 en development version

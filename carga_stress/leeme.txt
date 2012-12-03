@@ -1,0 +1,4 @@
+En el conexion.php se deben configurar los datos de conexion a la base de datos mysql.
+En el archivo sql.sql esta el SQL necesario para crear la base de datos y la tabla.
+El archivo insertar.php genera 15000 registros aleatorios y los inserta en la base de datos utilizando un insert multiple.
+El archivo consultar.php trae 15000 registros de la base de datos y los muestra uno por uno en pantalla, en intervalos de 1/16 segundos.

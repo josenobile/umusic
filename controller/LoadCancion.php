@@ -1,7 +1,7 @@
 <?php
 date_default_timezone_set ( "America/Bogota" );
 // ob_start();
-require_once '../lib/DBNative.php';
+require_once 'lib/DBNative.php';
 // CONFIG DB
 define ( "DB_USER", "root" );
 define ( "DB_PASS", "" );
@@ -27,7 +27,7 @@ class LoadDocument {
 		$this->dbc = DBNative::get ( DSN );
 		
 		$sql = <<<EOT
-SELECT titulo, archivo, archivo_content_type
+SELECT nombre, contenido_binario, mime
 FROM Cancion
 WHERE idCancion = %s        
 EOT;
@@ -45,7 +45,7 @@ alert("Cancion Not Uploaded");
 <?PHP
 			exit ( 0 );
 		}
-		$content = $rst ["archivo"];
+		$content = $rst ["contenido_binario"];
 		$contentLength = strlen ( $content );
 		
 		if ($contentLength == 0) {
@@ -60,16 +60,12 @@ alert("The document was not uploaded properly, document is empty.");
 		while ( ob_get_contents () != '' )
 			ob_end_clean (); // clear buffer
 		header ( 'Content-Description: File Transfer' );
-		header ( "Content-Type: {$rst["archivo_content_type"]}" );
-		header ( "Content-Disposition: inline; filename=\"{$rst["titulo"]}\"" );
+		header ( "Content-Type: {$rst["mime"]}" );
+		header ( "Content-Disposition: inline; filename=\"{$rst["nombre"]}\"" );
 		header ( 'Content-Transfer-Encoding: binary' );
 		header ( 'Content-Length: ' . $contentLength );
 		echo $content;
 		exit ( 0 );
 	}
-}
-
-if (! empty ( $_GET ["id"] )) {
-	$loadDoc = new LoadDocument ( $_GET ["id"] );
 }
 ?>

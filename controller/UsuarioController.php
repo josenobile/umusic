@@ -12,12 +12,13 @@ class UsuarioController{
     public function manejadorDeAcciones() {
 		if (@$_REQUEST ['sEcho'] != "") {
 			die ( $this->usuario->getPager (array(
+				"idUsuario",	
 				   			"Nombre",
             			"Apellido",
             			"Email",
-            			"Contraseña",
+            			//"Contraseña",
             			"Estado",
-            			"Sesion Activa",
+            			//"Sesion Activa",
             			) )->getJSON () );
 		}
 		if(isset($_REQUEST["format"])){
@@ -41,7 +42,8 @@ class UsuarioController{
 	}
 	private function guardar() {
 		$this->usuario->cargarPorId($_POST [$this->usuario->getNombreId()]);
-		$this->usuario->setValues ( $_POST );		
+		$this->usuario->setValues ( $_POST );	
+		$this->usuario->setSesionActiva(0);	
 		if(isset($_POST ["contraseñaNew"]) && $_POST ["contraseñaNew"]!="")
 			$this->usuario->setContraseña(md5($_POST ["contraseñaNew"]));
 		$this->usuario->save ();
